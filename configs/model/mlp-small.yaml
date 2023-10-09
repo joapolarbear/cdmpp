@@ -1,0 +1,44 @@
+### Some configurations
+source_data_root: "/home/tiger/ws/CrossDevicePredict"
+cutlass_path: "/home/tiger/cutlass"
+target_kernel_type: "gemm"
+# target_kernel_type: "conv2d_fprop"
+
+source_gpu: "Tesla_V100-SXM2-32GB"
+# source_gpu: "Tesla_T4"
+# source_gpu: "A100_Graphics_Device"
+target_gpu: "Tesla_V100-SXM2-32GB"
+# target_gpu: "Tesla_T4"
+# target_gpu: "A100_Graphics_Device"
+dtype: "fp32"
+# dtype: "fp16"
+# target_model: "ResNet50"
+# target_model: "BERT-Large"
+
+cfg_name: mlp-small
+metric_learner: 2
+cost_model:
+  input_layer_unit: 32
+  embedded_layers:
+    - 32
+  embed_feature_len: 32
+  regression_layers:
+    - 32
+  opt_type: "adam"
+  lr: 1.e-4
+  wd: 1.e-4
+  batch_size: 32
+  enable_similarity: False
+  loss_type: MSE # one of MSE, MAPE, MSPE
+  use_clip: null
+  enable_up_sampling: False
+  enable_adversarial: False
+  use_residual: False
+  lr_scheduler: "none"
+  USE_CMD_REGULAR: False
+  use_di: False
+  dropout_rate: null
+
+verify:
+  CONTINUOUS_LEARN: False
+  TARGET_TASK_ID: null

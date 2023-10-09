@@ -1,0 +1,37 @@
+cfg_name: search_trial_1575
+cost_model:
+  USE_CMD_REGULAR: true
+  batch_size: 600
+  dropout_rate: null
+  embed_feature_len: 69
+  embedded_layers:
+  - 985
+  - 985
+  - 985
+  enable_adversarial: false
+  enable_similarity: false
+  enable_up_sampling: false
+  input_layer_unit: 716
+  loss_type: MSE+MAPE
+  lr: 1.6765674942282653e-05
+  lr_scheduler: cycle
+  opt_type: adam
+  regression_layers:
+  - 930
+  - 930
+  - 930
+  tsfm_layer_num: 11
+  use_clip: null
+  use_di: false
+  use_residual: false
+  wd: 0.001307066900542625
+cutlass_path: /home/tiger/cutlass
+dtype: fp32
+metric_learner: 2
+source_data_root: /home/tiger/ws/CrossDevicePredict
+source_gpu: Tesla_V100-SXM2-32GB
+target_gpu: Tesla_V100-SXM2-32GB
+target_kernel_type: gemm
+verify:
+  CONTINUOUS_LEARN: false
+  TARGET_TASK_ID: null

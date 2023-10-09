@@ -1,0 +1,12 @@
+*__pycache__
+*.fig/
+*.cache
+*.log
+debug.json
+tmp*
+synthetic.json
+.workspace
+*.db
+launch_logs
+/*.tsv
+/*.json

@@ -1,0 +1,6 @@
+[submodule "3rdparty/tenset"]
+	path = 3rdparty/tenset
+	url = https://github.com/joapolarbear/tenset.git
+[submodule "3rdparty/tlp"]
+	path = 3rdparty/tlp
+	url = https://github.com/joapolarbear/tlp.git

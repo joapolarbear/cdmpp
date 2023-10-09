@@ -1,0 +1,1 @@
+config = {'batch_size': 1020, 'lr': 0.018149502653270394, 'wd': 0.0017537773825926817, 'op_type': 'adam', 'loss_type': 'MSE+MAPE', 'lr_scheduler': 'exp', 'input_layer_unit': 269, 'embed_layer_unit': 223, 'embed_layer_num': 3, 'embed_feature_len': 274, 'mlp_layer_unit': 282, 'mlp_layer_num': 9, 'tsfm_layer_num': 7, 'trial_id': 5}

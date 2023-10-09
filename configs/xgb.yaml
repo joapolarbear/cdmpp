@@ -1,0 +1,26 @@
+### Some configurations
+source_data_root: "/home/tiger/ws/CrossDevicePredict"
+cutlass_path: "/home/tiger/cutlass"
+target_kernel_type: "gemm"
+# target_kernel_type: "conv2d_fprop"
+
+source_gpu: "Tesla_V100-SXM2-32GB"
+# source_gpu: "Tesla_T4"
+# source_gpu: "A100_Graphics_Device"
+target_gpu: "Tesla_V100-SXM2-32GB"
+# target_gpu: "Tesla_T4"
+# target_gpu: "A100_Graphics_Device"
+dtype: "fp32"
+# dtype: "fp16"
+# target_model: "ResNet50"
+# target_model: "BERT-Large"
+
+cfg_name: xgb
+metric_learner: 3
+cost_model:
+  ### Tuning results
+  # max_depth: 95
+  # gamma: 0.0001
+  # min_child_weight: 2
+  # subsample: 0.6918771139504734
+  # eta: 0.0983468338330501

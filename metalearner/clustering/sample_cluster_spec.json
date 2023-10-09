@@ -1,0 +1,21 @@
+{
+   "filter_dim": "leaf_node_no",
+   "filter_entries": [
+        {
+            "rule": "=5",
+            "entry": {
+                "filter_dim": "FLOPs",
+                "filter_entries": [
+                    {
+                        "rule": ">=1e9",
+                        "entry": ".workspace/runs/20221119_autotune_trial_1575-large_flops/cm/BaseLearner"
+                    },
+                    {
+                        "rule": "default",
+                        "entry": ".workspace/runs/20221119_autotune_trial_1575-small_flops/cm/BaseLearner"
+                    }
+                ]
+            }
+        }
+    ]
+}
