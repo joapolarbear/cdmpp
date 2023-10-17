@@ -22,7 +22,7 @@ bash setup.sh
 You can choose to use either the CPU part or the GPU part. See [Tenset Dataset](https://github.com/tlc-pack/tenset/blob/main/docs/get_started_with_cost_model_experiments.md) to download the dataset accordingly. Our profiled dataset for A100, V100 and P100 will be available at DOI:10.6084/m9.figshare.24156084
 
 ### An example for T4
-Here we show an example to download the dataset of Nvidia T4.
+Here we show an example to download the dataset of NVDIA T4.
 1. Change directory to `<The root directory of cdmpp>/3rdparty/tenset/scripts/`
 2. Download
   - You can download it from google drive with the link [dataset_gpu_v3.3.zip](https://drive.google.com/file/d/1jqHbmvXUrLPDCIqJIaPee_atsPc0ZFFK/view?usp=sharing)
@@ -33,8 +33,8 @@ Here we show an example to download the dataset of Nvidia T4.
     ```
 3. Unzip  
   Put `dataset_gpu_v3.3.zip` under `<The root directory of cdmpp>/3rdparty/tenset/scripts/` and run `unzip dataset_gpu_v3.3.zip`.
-  A new folder `dataset_gpu` will appear in `<The root directory of cdmpp>/3rdparty/tenset/scripts/`. Make 'dataset' as a softlink to it
-  by `ln -s <The root directory of cdmpp>/3rdparty/tenset/scripts//dataset_gpu dataset`.
+  A new folder `dataset_gpu` will appear in `<The root directory of cdmpp>/3rdparty/tenset/scripts/`. Make `dataset` as a softlink to it
+  by `ln -s <The root directory of cdmpp>/3rdparty/tenset/scripts/dataset_gpu dataset`.
 
 ### Feature Extraction
 Next, we will extract features for the dataset of each device. Make sure that you have put the profiled dataset under `3rdparty/tenset/scripts/dataset/measure_records/$DEVICE_MODEL/`, where `$DEVICE_MODEL` is the device whose dataset you want to extract from. Then, you can run the following commands to extract features.
