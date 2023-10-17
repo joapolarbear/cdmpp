@@ -1,4 +1,4 @@
-
+# Configuration
 Pull our docker image
 ```
 docker pull haaanpeng/cdmpp:eurosys_ae
