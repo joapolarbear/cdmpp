@@ -6,7 +6,7 @@ docker pull haaanpeng/cdmpp:eurosys_ae
 
 Launch the container
 ```bash
-nvidia-docker run -it --shm-size 32768m --name hphu-test haaanpeng/cdmpp:eurosys_ae /bin/bash
+docker run -it --runtime=nvidia --gpus all --shm-size 32768m --name hphu-test haaanpeng/cdmpp:eurosys_ae /bin/bash
 ```
 
 Download the source code and install dependencies.
