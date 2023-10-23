@@ -19,7 +19,7 @@ bash setup.sh
 ## Prepare the Dataset
 
 ### Download and unzip
-You can choose to use either the CPU part or the GPU part. See [Tenset Dataset](https://github.com/tlc-pack/tenset/blob/main/docs/get_started_with_cost_model_experiments.md) to download the dataset accordingly. Our profiled dataset for A100, V100 and P100 will be available at DOI:10.6084/m9.figshare.24156084
+You can choose to use either the CPU part or the GPU part. See [Tenset Dataset](https://github.com/tlc-pack/tenset/blob/main/docs/get_started_with_cost_model_experiments.md) to download the dataset accordingly. Our profiled dataset for A100, V100 and P100 will be available at [DOI:10.6084/m9.figshare.24156084](https://figshare.com/articles/dataset/cdmpp-data/24156084)
 
 ### An example for T4
 Here we show an example to download the dataset of NVDIA T4.
