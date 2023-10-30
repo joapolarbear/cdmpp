@@ -1,4 +1,16 @@
-# Configuration
+CDMPP is a framework to accurately predict the latency of tensor programs from different DNN models on various devices
+
+# Prerequisite
+## Hardware dependencies
+The current implementation of CDMPP requires GPUs to run the cost model. 
+
+## Software dependencies
+- customized TVM: \url{https://github.com/joapolarbear/tvm}
+- dPRO: \url{https://github.com/joapolarbear/dpro}
+- CUDA driver version >=450.80.02 (Linux) / 452.39 (Windows)
+
+# How to run
+## Launch a container
 Pull our docker image
 ```
 docker pull haaanpeng/cdmpp:eurosys_ae
@@ -21,7 +33,7 @@ bash setup.sh
 ### Download and unzip
 You can choose to use either the CPU part or the GPU part. See [Tenset Dataset](https://github.com/tlc-pack/tenset/blob/main/docs/get_started_with_cost_model_experiments.md) to download the dataset accordingly. Our profiled dataset for A100, V100 and P100 will be available at [DOI:10.6084/m9.figshare.24156084](https://figshare.com/articles/dataset/cdmpp-data/24156084)
 
-### An example for T4
+### An example for T4 GPU
 Here we show an example to download the dataset of NVDIA T4.
 1. Change directory to `<The root directory of cdmpp>/3rdparty/tenset/scripts/`
 2. Download
@@ -32,9 +44,33 @@ Here we show an example to download the dataset of NVDIA T4.
     gdown https://drive.google.com/uc?id=1jqHbmvXUrLPDCIqJIaPee_atsPc0ZFFK
     ```
 3. Unzip  
-  Put `dataset_gpu_v3.3.zip` under `<The root directory of cdmpp>/3rdparty/tenset/scripts/` and run `unzip dataset_gpu_v3.3.zip`.
-  A new folder `dataset_gpu` will appear in `<The root directory of cdmpp>/3rdparty/tenset/scripts/`. Make `dataset` as a softlink to it
+  - Put `dataset_gpu_v3.3.zip` under `<The root directory of cdmpp>/3rdparty/tenset/scripts/` and run `unzip dataset_gpu_v3.3.zip`.
+  - A new folder `dataset_gpu` will appear in `<The root directory of cdmpp>/3rdparty/tenset/scripts/`. Make `dataset` as a softlink to it
   by `ln -s <The root directory of cdmpp>/3rdparty/tenset/scripts/dataset_gpu dataset`.
+
+### An example for AMD EPYC 7452 CPU
+Here we show an example to download the dataset of AMD EPYC 7452 CPU.
+1. Change directory to `<The root directory of cdmpp>/3rdparty/tenset/scripts/`
+2. Download
+  - You can download it from google drive with the link [dataset_cpu_v3.3.zip](https://drive.google.com/file/d/1JQwGEe8jCpuhZPnUxO0Sb1CJJ06uevy6/view?usp=sharing)
+  - Or you can use the command line
+    ```
+    pip3 install gdown
+    gdown https://drive.google.com/uc?id=1JQwGEe8jCpuhZPnUxO0Sb1CJJ06uevy6
+    ```
+3. Unzip  
+  - Put `dataset_cpu_v3.3.zip` under `<The root directory of cdmpp>/3rdparty/tenset/scripts/` and run `unzip dataset_cpu_v3.3.zip`.
+  - A new folder `dataset_cpu` will appear in `<The root directory of cdmpp>/3rdparty/tenset/scripts/`. Make `dataset` as a softlink to it
+  by `ln -s <The root directory of cdmpp>/3rdparty/tenset/scripts/dataset_cpu dataset`.
+  - If `dataset` already exists, just run `mv dataset_cpu/measure_records/* dataset/measure_records/`
+
+You will see several direcotires under `<The root directory of cdmpp>/3rdparty/tenset/scripts/dataset/measure_records` as follows
+```bash
+measure_records
+  |-t4
+  |-k80
+```
+Note that each directory name represents a specific device and we will use those device names as flags to specify which device we will use to extract features or run training.
 
 ### Feature Extraction
 Next, we will extract features for the dataset of each device. Make sure that you have put the profiled dataset under `3rdparty/tenset/scripts/dataset/measure_records/$DEVICE_MODEL/`, where `$DEVICE_MODEL` is the device whose dataset you want to extract from. Then, you can run the following commands to extract features.
@@ -44,6 +80,8 @@ bash scripts/dataset/gen_raw_feature_all.sh
 ``` 
 By default, the extracted features will be stored at `.workspace/ast_ansor/$DEVICE_MODEL`.
 The process of extracting features and data preprocessing may take around 10~20 minutes for the dataset of each device.
+If you want to extract features for other device, just modify `DEVICES` in the `gen_raw_feature_all.sh`. 
+By default, `'t4'` is used. Take AMD EPYC 7452 CPU for example, you can modify `DEVICES` as `DEVICES=('epyc-7452')`. 
 
 ### Data Preprocessing [Optional]
 Run the following commands to preprocess the dataset
@@ -60,6 +98,7 @@ We will the configuration file `tmp/search_trial_20221119_1575.yaml`, which cont
 ```
 bash scripts/exp/cross_model.sh none
 ```
+Similar to feature extraction, you can modify `DEVICES` in the `gen_raw_feature_all.sh` to run training on the dataset from other devices, e.g., Take AMD EPYC 7452 CPU for example, you can modify `DEVICES` as `DEVICES=('epyc-7452')`. 
 
 ## Cross-device training
 ```

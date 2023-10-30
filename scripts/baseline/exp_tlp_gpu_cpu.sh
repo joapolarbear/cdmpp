@@ -3,7 +3,8 @@
 
 PROJECT_PATH=$PWD && export PYTHONPATH=$PROJECT_PATH:$PROJECT_PATH/3rdparty/tenset/scripts:$PYTHONPATH
 
-TASK_NUMBER=200
+SAMPLE_NUM=2308
+# SAMPLE_NUM=200
 EXP_TIMES=3
 cd 3rdparty/tlp/scripts
 RST_DIR=".workspace"
@@ -15,12 +16,12 @@ CPU_DEVICES=('e5-2673'  'epyc-7452'  'graviton2')
 
 ### For cross device learning, unify the seq_len and emb_size for CPU and GPUs
 function single_device_make_dataset {
-    if [[ -f ${RST_DIR}/dataset_${1}_${TASK_NUMBER}_train_and_val.pkl && -f ${RST_DIR}/dataset_${1}_${TASK_NUMBER}_test.pkl ]]; then
+    if [[ -f ${RST_DIR}/dataset_${1}_${SAMPLE_NUM}_train_and_val.pkl && -f ${RST_DIR}/dataset_${1}_${SAMPLE_NUM}_test.pkl ]]; then
         echo "[Dataset] Dataset for devoce $1 has been created"
     else
         echo "[Dataset] Create dataset for device ${DEVICE}"
         python3 tlp_make_dataset.py \
-            --files_cnt=${TASK_NUMBER} \
+            --files_cnt=${SAMPLE_NUM} \
             --json_files_path=dataset/measure_records/$1 \
             --platform=${2} \
             --save_name ${RST_DIR}/dataset_$1 \
@@ -47,7 +48,7 @@ GPU_SOURCE_DATA=""
 GPU_MLT_HEAD_LIST=""
 GPU_DEVICE_CNT=0
 for SOURCE_DEVICE in "${GPU_DEVICES[@]}"; do
-    GPU_SOURCE_DATA="${GPU_SOURCE_DATA} ${RST_DIR}/dataset_${SOURCE_DEVICE}_${TASK_NUMBER}_train_and_val.pkl"
+    GPU_SOURCE_DATA="${GPU_SOURCE_DATA} ${RST_DIR}/dataset_${SOURCE_DEVICE}_${SAMPLE_NUM}_train_and_val.pkl"
     GPU_DEVICE_CNT=$((${GPU_DEVICE_CNT}+1))
     if [[ -z ${GPU_MLT_HEAD_LIST} ]]; then
         GPU_MLT_HEAD_LIST=${GPU_DEVICE_CNT}
@@ -66,7 +67,7 @@ for TARGET_DEVICE in "${CPU_DEVICES[@]}"; do
         DEVICE_CNT=${GPU_DEVICE_CNT}
         for SOURCE_DEVICE in "${CPU_DEVICES[@]}"; do
             if [[ ${SOURCE_DEVICE} != ${TARGET_DEVICE} ]]; then
-                SOURCE_DATA="${SOURCE_DATA} ${RST_DIR}/dataset_${SOURCE_DEVICE}_${TASK_NUMBER}_train_and_val.pkl"
+                SOURCE_DATA="${SOURCE_DATA} ${RST_DIR}/dataset_${SOURCE_DEVICE}_${SAMPLE_NUM}_train_and_val.pkl"
                 DEVICE_CNT=$((${DEVICE_CNT}+1))
                 if [[ -z ${MLT_HEAD_LIST} ]]; then
                     MLT_HEAD_LIST=${DEVICE_CNT}
@@ -75,11 +76,11 @@ for TARGET_DEVICE in "${CPU_DEVICES[@]}"; do
                 fi
             fi
         done
-        SOURCE_DATA="${SOURCE_DATA} ${RST_DIR}/dataset_${TARGET_DEVICE}_${TASK_NUMBER}_train_and_val.pkl"
+        SOURCE_DATA="${SOURCE_DATA} ${RST_DIR}/dataset_${TARGET_DEVICE}_${SAMPLE_NUM}_train_and_val.pkl"
         MLT_HEAD_LIST=${MLT_HEAD_LIST},0
         
-        COST_MODEL_DIR=${RST_DIR}/cost_models/gpu2cpu_tlp_${TARGET_DEVICE}_${i}_${TASK_NUMBER}
-        LOG_PATH=${RST_DIR}/logs/gpu2cpu_tlp_${TARGET_DEVICE}_${i}_${TASK_NUMBER}.txt
+        COST_MODEL_DIR=${RST_DIR}/cost_models/gpu2cpu_tlp_${TARGET_DEVICE}_${i}_${SAMPLE_NUM}
+        LOG_PATH=${RST_DIR}/logs/gpu2cpu_tlp_${TARGET_DEVICE}_${i}_${SAMPLE_NUM}.txt
 
         echo ${MLT_HEAD_LIST}
         echo ${SOURCE_DATA}
@@ -99,7 +100,7 @@ for TARGET_DEVICE in "${CPU_DEVICES[@]}"; do
 
         # Test the cost model
         python3 tlp_eval.py \
-            --test_dataset_name=${RST_DIR}/dataset_${TARGET_DEVICE}_${TASK_NUMBER}_test.pkl \
+            --test_dataset_name=${RST_DIR}/dataset_${TARGET_DEVICE}_${SAMPLE_NUM}_test.pkl \
             --load_name=${COST_MODEL_DIR}/mtl_tlp_model_49.pkl \
             --platform=llvm 2>&1 | tee -a ${LOG_PATH}
 

@@ -3,7 +3,8 @@
 
 PROJECT_PATH=$PWD && export PYTHONPATH=$PROJECT_PATH:$PROJECT_PATH/3rdparty/tenset/scripts:$PYTHONPATH
 
-TASK_NUMBER=200
+SAMPLE_NUM=2308
+# SAMPLE_NUM=200
 EXP_TIMES=3
 cd 3rdparty/tlp/scripts
 RST_DIR=".workspace"
@@ -29,27 +30,27 @@ else
 fi
 echo "$PLATFORM,$DEVICES"
 
-rm ${RST_DIR}/dataset_${TASK_NUMBER}_train_and_val.pkl
-rm ${RST_DIR}/dataset_${TASK_NUMBER}_test.pkl
+rm ${RST_DIR}/dataset_${SAMPLE_NUM}_train_and_val.pkl
+rm ${RST_DIR}/dataset_${SAMPLE_NUM}_test.pkl
 for DEVICE in "${DEVICES[@]}"; do
     for (( i=1; i<=${EXP_TIMES}; i++ )); do
         echo "Cross-model: device ${DEVICE}, Exp iter ${i}"
         
         python3 tlp_make_dataset.py \
-            --files_cnt=${TASK_NUMBER} \
+            --files_cnt=${SAMPLE_NUM} \
             --json_files_path=dataset/measure_records/${DEVICE} --platform=${PLATFORM} \
             --save_name ${RST_DIR}/dataset
 
-        COST_MODEL_DIR=${RST_DIR}/cost_models/tlp_${DEVICE}_${i}_${TASK_NUMBER}
-        LOG_PATH=${RST_DIR}/logs/tlp_${DEVICE}_${i}_${TASK_NUMBER}.txt
+        COST_MODEL_DIR=${RST_DIR}/cost_models/tlp_${DEVICE}_${i}_${SAMPLE_NUM}
+        LOG_PATH=${RST_DIR}/logs/tlp_${DEVICE}_${i}_${SAMPLE_NUM}.txt
 
         python3 tlp_train.py \
             --save_folder=${COST_MODEL_DIR} \
-            --dataset=${RST_DIR}/dataset_${TASK_NUMBER}_train_and_val.pkl \
+            --dataset=${RST_DIR}/dataset_${SAMPLE_NUM}_train_and_val.pkl \
             --step_size=40 --fea_size=20 2>&1 | tee ${LOG_PATH}
 
         python3 tlp_eval.py \
-            --test_dataset_name=${RST_DIR}/dataset_${TASK_NUMBER}_test.pkl \
+            --test_dataset_name=${RST_DIR}/dataset_${SAMPLE_NUM}_test.pkl \
             --load_name=${COST_MODEL_DIR}/tlp_model_49.pkl \
             --platform=${PLATFORM} 2>&1 | tee -a ${LOG_PATH}
 

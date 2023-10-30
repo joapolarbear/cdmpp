@@ -3,7 +3,8 @@ set -x
 
 PROJECT_PATH=$PWD && export PYTHONPATH=$PROJECT_PATH:$PROJECT_PATH/3rdparty/tenset/scripts:$PYTHONPATH
 
-TASK_NUMBER=200
+SAMPLE_NUM=2308
+# SAMPLE_NUM=200
 EXP_TIMES=3
 cd 3rdparty/tlp/scripts
 RST_DIR=".workspace"
@@ -32,7 +33,7 @@ echo "$PLATFORM,$DEVICES"
 ### For cross device learning
 function single_device_make_dataset {
     python3 tlp_make_dataset.py \
-        --files_cnt=${TASK_NUMBER} \
+        --files_cnt=${SAMPLE_NUM} \
         --json_files_path=dataset/measure_records/$1 \
         --platform=${PLATFORM} \
         --save_name ${RST_DIR}/dataset_$1
@@ -52,7 +53,7 @@ for DEVICE in "${DEVICES[@]}"; do
         DEVICE_CNT=0
         for SOURCE_DEVICE in "${DEVICES[@]}"; do
             if [[ ${SOURCE_DEVICE} != ${TARGET_DEVICE} ]]; then
-                SOURCE_DATA="${SOURCE_DATA} ${RST_DIR}/dataset_${SOURCE_DEVICE}_${TASK_NUMBER}_train_and_val.pkl"
+                SOURCE_DATA="${SOURCE_DATA} ${RST_DIR}/dataset_${SOURCE_DEVICE}_${SAMPLE_NUM}_train_and_val.pkl"
                 DEVICE_CNT=$((${DEVICE_CNT}+1))
                 if [[ -z ${MLT_HEAD_LIST} ]]; then
                     MLT_HEAD_LIST=${DEVICE_CNT}
@@ -61,11 +62,11 @@ for DEVICE in "${DEVICES[@]}"; do
                 fi
             fi
         done
-        SOURCE_DATA="${SOURCE_DATA} ${RST_DIR}/dataset_${TARGET_DEVICE}_${TASK_NUMBER}_train_and_val.pkl"
+        SOURCE_DATA="${SOURCE_DATA} ${RST_DIR}/dataset_${TARGET_DEVICE}_${SAMPLE_NUM}_train_and_val.pkl"
         MLT_HEAD_LIST=${MLT_HEAD_LIST},0
         
-        COST_MODEL_DIR=${RST_DIR}/cost_models/mtl_tlp_${TARGET_DEVICE}_${i}_${TASK_NUMBER}
-        LOG_PATH=${RST_DIR}/logs/mtl_tlp_${TARGET_DEVICE}_${i}_${TASK_NUMBER}.txt
+        COST_MODEL_DIR=${RST_DIR}/cost_models/mtl_tlp_${TARGET_DEVICE}_${i}_${SAMPLE_NUM}
+        LOG_PATH=${RST_DIR}/logs/mtl_tlp_${TARGET_DEVICE}_${i}_${SAMPLE_NUM}.txt
 
         echo ${MLT_HEAD_LIST}
         echo ${SOURCE_DATA}
@@ -86,7 +87,7 @@ for DEVICE in "${DEVICES[@]}"; do
 
         # Test the cost model
         python3 tlp_eval.py \
-            --test_dataset_name=${RST_DIR}/dataset_${TARGET_DEVICE}_${TASK_NUMBER}_test.pkl \
+            --test_dataset_name=${RST_DIR}/dataset_${TARGET_DEVICE}_${SAMPLE_NUM}_test.pkl \
             --load_name=${COST_MODEL_DIR}/mtl_tlp_model_49.pkl \
             --platform=${PLATFORM} 2>&1 | tee -a ${LOG_PATH}
 

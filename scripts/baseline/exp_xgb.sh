@@ -38,7 +38,8 @@ COMMENTS
 PROJECT_PATH=$PWD && export PYTHONPATH=$PROJECT_PATH:$PROJECT_PATH/3rdparty/tenset/scripts:$PYTHONPATH
 
 ### Run tenset scripts
-TASK_NUMBER=200
+SAMPLE_NUM=2308
+# SAMPLE_NUM=200
 EXP_TIMES=3
 cd 3rdparty/tenset/scripts
 RST_DIR=".workspace"
@@ -75,16 +76,16 @@ for DEVICE in "${DEVICES[@]}"; do
         rm -rf ${RST_DIR}/tenset_dataset.pkl
         python3 make_dataset.py \
             --device ${DEVICE} \
-            --data-size ${TASK_NUMBER} \
+            --data-size ${SAMPLE_NUM} \
             --out-file ${RST_DIR}/tenset_dataset.pkl
 
-        LOG_PATH=${RST_DIR}/logs/xgb_${DEVICE}_${i}_${TASK_NUMBER}.txt
+        LOG_PATH=${RST_DIR}/logs/xgb_${DEVICE}_${i}_${SAMPLE_NUM}.txt
         
         python3 train_model.py \
             --train-ratio 0.8 \
             --models xgb@random \
             --dataset ${RST_DIR}/tenset_dataset.pkl 2>&1 | tee ${LOG_PATH}
         
-        mv xgb.pkl ${RST_DIR}/cost_models/xgb_${DEVICE}_${i}_${TASK_NUMBER}.pkl
+        mv xgb.pkl ${RST_DIR}/cost_models/xgb_${DEVICE}_${i}_${SAMPLE_NUM}.pkl
     done
 done

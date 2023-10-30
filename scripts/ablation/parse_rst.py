@@ -5,7 +5,8 @@ import json
 import pandas as pd
 
 line = "Time 4322.830 s - Epoch 492 step 92000 bs 600 - loss_train=0.711212098598, {'mape': 0.00027807533778090874, 'rmse': 3.0450093463500007e-07, '20%accuracy': 1.0, '10%accuracy': 1.0, '5%accuracy': 0.9999282639885222}"
-SAMPLE_NUM = 200
+SAMPLE_NUM=2308
+# SAMPLE_NUM = 200
 
 LINE_PATTERN = r"Time\s+(?P<time>\d+\.\d+|\d+) s - "
 LINE_PATTERN += r"Epoch\s+(?P<epoch>\d+) "

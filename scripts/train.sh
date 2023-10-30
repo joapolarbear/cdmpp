@@ -9,11 +9,11 @@ bash scripts/train.sh tune --tune_method gen_cfg
 ### Training
 ```
 bash scripts/train.sh run \
-    --mode sample200 \
+    --mode sample2308 \
     -i .workspace/ast_ansor  --tb_logdir .workspace/runs/autotune_trial_5_fine_tune --ave_lb 0 --output_norm_method log  -y
 
 bash scripts/train.sh run \
-    --mode sample200,network-resnet_50_bs1-resnet_50_bs4-resnet_50_bs8 --ave_lb 0
+    --mode sample2308,network-resnet_50_bs1-resnet_50_bs4-resnet_50_bs8 --ave_lb 0
 ```
 Or you can add `--load_cache` to load cached cost model
 
@@ -21,19 +21,19 @@ Or you can add `--load_cache` to load cached cost model
 ```
 bash scripts/train.sh tune -y \
     --tune_method optuna \                               
-    --mode sample200 --output_norm_method log --ave_lb 0
+    --mode sample2308 --output_norm_method log --ave_lb 0
 ```
 
 ### Check the tuning results
 ```
 bash scripts/train.sh tune -y \
-    --tune_method optuna,monitor,ast_ansor_sample200,network-resnet_50_bs1-resnet_50_bs4-resnet_50_bs8_mo \
+    --tune_method optuna,monitor,ast_ansor_sample2308,network-resnet_50_bs1-resnet_50_bs4-resnet_50_bs8_mo \
     -i .workspace/ast_ansor\
-    --mode sample200 > log.txt
+    --mode sample2308 > log.txt
 ```
 ### analyze
 ```
-bash scripts/train.sh analyze --mode sample200 -i .workspace/ast_ansor --cache_dir test_cm --output_norm_method log --ave_lb 0 -y
+bash scripts/train.sh analyze --mode sample2308 -i .workspace/ast_ansor --cache_dir test_cm --output_norm_method log --ave_lb 0 -y
 ```
 COMMENTS
 
@@ -71,6 +71,7 @@ mkdir -p .workspace
 # fi
 mkdir -p .workspace/autotune
 
+SAMPLE_NUM=2308
 remain_arg=${@:2}
 
 ### ------ Start Training
@@ -86,7 +87,7 @@ elif [[ $1 =~ ^make_dataset_run.* ]]; then
     python3 main.py \
         --source_data tir \
         -o make_dataset \
-        --mode sample200 \
+        --mode sample${SAMPLE_NUM} \
         -i .workspace/ast_ansor $remain_arg
         
     python3 ${DEBUG_STR} main.py \
@@ -99,7 +100,7 @@ elif [[ $1 =~ ^metadata.* ]]; then
     python3 main.py \
         --source_data tir \
         -o metadata \
-        --mode sample200 \
+        --mode sample${SAMPLE_NUM} \
         -i .workspace/ast_ansor $remain_arg
 elif [[ $1 =~ ^analyze.* ]]; then
     python3 ${DEBUG_STR} main.py \

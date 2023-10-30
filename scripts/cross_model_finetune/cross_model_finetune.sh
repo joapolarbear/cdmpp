@@ -1,7 +1,8 @@
 #!/bin/bash
 # set -x
 
-TASK_NUMBER=200
+SAMPLE_NUM=2308
+SAMPLE_NUM=200
 EXP_TIMES=1
 
 RST_DIR=.workspace/cross_model_finetune
@@ -43,11 +44,11 @@ for DEVICE in ${ALL_DEVICES[@]}; do
     for (( i=1; i<=${EXP_TIMES}; i++ )); do
         if [[ ${DOMAIN_DIFF_METRIC} == "none" ]]; then
             DOMAIN_DIFF_ARG=""
-            LOG_PATH=${RST_DIR}/logs/${DEVICE}_${i}_${TASK_NUMBER}_${NETWORK}.txt
-            TB_DIR=${RST_DIR}/cost_models/${DEVICE}_${i}_${TASK_NUMBER}_${NETWORK}
+            LOG_PATH=${RST_DIR}/logs/${DEVICE}_${i}_${SAMPLE_NUM}_${NETWORK}.txt
+            TB_DIR=${RST_DIR}/cost_models/${DEVICE}_${i}_${SAMPLE_NUM}_${NETWORK}
         else
-            LOG_PATH=${RST_DIR}/logs/${DEVICE}_${i}_${TASK_NUMBER}_${NETWORK}_${DOMAIN_DIFF_METRIC}.txt
-            TB_DIR=${RST_DIR}/cost_models/${DEVICE}_${i}_${TASK_NUMBER}_${NETWORK}_${DOMAIN_DIFF_METRIC}
+            LOG_PATH=${RST_DIR}/logs/${DEVICE}_${i}_${SAMPLE_NUM}_${NETWORK}_${DOMAIN_DIFF_METRIC}.txt
+            TB_DIR=${RST_DIR}/cost_models/${DEVICE}_${i}_${SAMPLE_NUM}_${NETWORK}_${DOMAIN_DIFF_METRIC}
             DOMAIN_DIFF_ARG="--domain_diff_metric ${DOMAIN_DIFF_METRIC}"
         fi
         
@@ -81,11 +82,11 @@ for DEVICE in ${ALL_DEVICES[@]}; do
         if [[ ${DOMAIN_DIFF_METRIC} == "none" ]]; then
             python3 scripts/exp/cmd2error.py "cm_finetune" \
                 ${TB_DIR}/cm/BaseLearner/best \
-                ${RST_DIR}/${DEVICE}_${i}_${TASK_NUMBER}_${NETWORK}_dist_visual.pdf
+                ${RST_DIR}/${DEVICE}_${i}_${SAMPLE_NUM}_${NETWORK}_dist_visual.pdf
         else
             python3 scripts/exp/cmd2error.py "cm_finetune" \
                 ${TB_DIR}/cm/BaseLearner/best \
-                ${RST_DIR}/${DEVICE}_${i}_${TASK_NUMBER}_${NETWORK}_${DOMAIN_DIFF_METRIC}_dist_visual.pdf
+                ${RST_DIR}/${DEVICE}_${i}_${SAMPLE_NUM}_${NETWORK}_${DOMAIN_DIFF_METRIC}_dist_visual.pdf
         fi
     done
     done

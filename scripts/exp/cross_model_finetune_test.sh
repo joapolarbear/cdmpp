@@ -1,13 +1,14 @@
 #!/bin/bash
 set -x
 
+SAMPLE_NUM=2308
 DEVICE=t4
-DATA_MODE="${DEVICE}:sample200.by_net:test-resnet3d_18"
+DATA_MODE="${DEVICE}:sample$SAMPLE_NUM.by_net:test-resnet3d_18"
 FILTER_STR=110
 DEFAULT_TBLOG_DIR=".workspace/runs/20221119_autotune_trial_1575-fix_batch_first_bug-${DEVICE}"
 
 bash scripts/train.sh run -y \
-    --mode "${DEVICE}:sample200" \
+    --mode "${DEVICE}:sample$SAMPLE_NUM" \
     -c tmp/search_trial_20221119_1575.yaml \
     --output_norm_method 0 \
     --filters ${FILTER_STR} \

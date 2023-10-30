@@ -24,17 +24,18 @@ def parse_and_finetune_sampled_tasks(sample_log: str, device: str, line_no: int 
         return
 
     print(sample_log)
+    SAMPLE_NUM=2308
 
     rst["task_num"] = int(rst["task_num"])
     rst['selected_task_name_str'] = rst['selected_task_name_str'].replace(',', '-')
-    # mode = f"{device}:list-{rst['selected_task_name_str']}.by_device:train-{device}|{device}:sample200.by_device:test-{device}"
-    mode = f"{device}:list-{rst['selected_task_name_str']}.by_device:train-{device}|{device}:sample200"
+    # mode = f"{device}:list-{rst['selected_task_name_str']}.by_device:train-{device}|{device}:sample{SAMPLE_NUM}}.by_device:test-{device}"
+    mode = f"{device}:list-{rst['selected_task_name_str']}.by_device:train-{device}|{device}:sample{SAMPLE_NUM}}"
     pre_train_model_path = ".workspace/runs/cdpp_to_t4-pretrain-fix_batch_first_bug"
     finetune_cache_dir = f".workspace/runs/cdpp_to_{device}-finetune-{rst['sample_method']}_sample_{rst['task_num']}task-{line_no}"
     
     ### debug
     # finetune_cache_dir = f".workspace/runs/cdpp_to_{device}-finetune-test"
-    # mode = f"{device}:sample200|{device}:sample200"
+    # mode = f"{device}:sample{SAMPLE_NUM}}|{device}:sample{SAMPLE_NUM}}"
 
     ### Run finetuning
     cmd = f"bash scripts/train.sh run -y --mode sample200 -c tmp/search_trial_20221119_1575.yaml"

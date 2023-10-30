@@ -35,7 +35,7 @@ ln -sf /mnt/bd/tenset-data/tenset_makedataset_t4.pkl .workspace/tenset_makedatas
 COMMENTS
 
 ### Run tenset scripts
-TASK_NUMBER=10
+SAMPLE_NUM=2308
 cd 3rdparty/tenset/scripts
 mkdir .workspace
 ## Pre-process the measured records in Tenset, e.g., all records of t4
@@ -46,7 +46,7 @@ mkdir .workspace
 rm -rf .workspace/tenset_dataset.pkl
 python3 make_dataset.py \
     --device t4 \
-    --data-size ${TASK_NUMBER} \
+    --data-size ${SAMPLE_NUM} \
     --out-file .workspace/tenset_dataset.pkl
 
 # mkdir .workspace && mkdir .workspace/cm

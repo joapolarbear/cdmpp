@@ -1,6 +1,8 @@
 #!/bin/bash
 set -x
 
+SAMPLE_NUM=2308
+SAMPLE_NUM=200
 ALL_DEVICES=("v100", "t4", "a100" "p100" "k80")
 ALL_DEVICES=("t4")
 
@@ -8,27 +10,27 @@ if [[ $1 == "none" ]]; then
     ### Fix the bug of batch first
     for DEVICE in ${ALL_DEVICES[@]}; do
         bash scripts/train.sh run -y \
-            --mode "${DEVICE}:sample200" \
+            --mode "${DEVICE}:sample${SAMPLE_NUM}" \
             -c tmp/search_trial_20221119_1575.yaml \
             --output_norm_method 0 \
             --filters 110 \
             -t .workspace/runs/20221119_autotune_trial_1575-fix_batch_first_bug-${DEVICE}
         
-        rm -r tmp/dataset-ave_lb_0_0-filters_1_1_0/${DEVICE}:sample200
+        rm -r tmp/dataset-ave_lb_0_0-filters_1_1_0/${DEVICE}:sample${SAMPLE_NUM}
     done
     exit 0
 elif [[ $1 == "mmd" ]]; then
     ### Apply MMD-based regulizer
     for DEVICE in ${ALL_DEVICES[@]}; do
         bash scripts/train.sh run -y \
-            --mode "${DEVICE}:sample200" \
+            --mode "${DEVICE}:sample${SAMPLE_NUM}" \
             -c tmp/search_trial_20221119_1575-use_cmd.yaml \
             --output_norm_method 0 \
             --filters 110 \
             -t .workspace/runs/20221119_autotune_trial_1575-fix_batch_first_bug-${DEVICE}-mmd \
             $@
         
-        rm -r tmp/dataset-ave_lb_0_0-filters_1_1_0/${DEVICE}:sample200
+        rm -r tmp/dataset-ave_lb_0_0-filters_1_1_0/${DEVICE}:sample${SAMPLE_NUM}
     done
     exit 0
 fi
@@ -39,9 +41,9 @@ exit 0
 DEVICE="t4"
 
 # DATA_MODE="${DEVICE}:network-resnet_50_-resnet_18_-inception_v3_.by_net:test-resnet_18_"
-DATA_MODE="${DEVICE}:sample200.by_net:test-resnet3d_18"
-# DATA_MODE="${DEVICE}:sample200.by_net:test-bert_medium"
-# DATA_MODE="${DEVICE}:sample200.by_net:train-all,test-resnet_18"
+DATA_MODE="${DEVICE}:sample${SAMPLE_NUM}.by_net:test-resnet3d_18"
+# DATA_MODE="${DEVICE}:sample${SAMPLE_NUM}.by_net:test-bert_medium"
+# DATA_MODE="${DEVICE}:sample${SAMPLE_NUM}.by_net:train-all,test-resnet_18"
 
 USE_GRAD_CLIP=0
 FILTER_STR=110

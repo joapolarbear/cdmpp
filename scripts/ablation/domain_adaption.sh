@@ -1,7 +1,8 @@
 #!/ban/bash
 # set -x
 
-TASK_NUMBER=200
+SAMPLE_NUM=2308
+# SAMPLE_NUM=200
 EXP_TIMES=1
 
 RST_DIR=.workspace/ablation/domain_adaption
@@ -22,7 +23,7 @@ DISABLE_PE_STR=""
 OUTPUT_NORM_METHOD=0
 
 for DEVICE in ${ALL_DEVICES[@]}; do
-    DATA_MODE=${DEVICE}:sample${TASK_NUMBER}
+    DATA_MODE=${DEVICE}:sample${SAMPLE_NUM}
     PREPROCESS_DATA_DIR=tmp/dataset-ave_lb_0_0-filters${FILTER_STR}
     if [[ ${DISABLE_PE_STR} == "--disable_pe" ]]; then
         PREPROCESS_DATA_DIR=${PREPROCESS_DATA_DIR}-not_use_pe
@@ -37,8 +38,8 @@ for DEVICE in ${ALL_DEVICES[@]}; do
     echo "DOMAIN_DIFF_METRIC: ${DOMAIN_DIFF_METRIC}"
     for (( i=1; i<=${EXP_TIMES}; i++ )); do
     
-        LOG_PATH=${RST_DIR}/logs/${DEVICE}_${i}_${TASK_NUMBER}_${DOMAIN_DIFF_METRIC}.txt
-        TB_DIR=${RST_DIR}/cost_models/${DEVICE}_${i}_${TASK_NUMBER}_${DOMAIN_DIFF_METRIC}
+        LOG_PATH=${RST_DIR}/logs/${DEVICE}_${i}_${SAMPLE_NUM}_${DOMAIN_DIFF_METRIC}.txt
+        TB_DIR=${RST_DIR}/cost_models/${DEVICE}_${i}_${SAMPLE_NUM}_${DOMAIN_DIFF_METRIC}
 
         echo "LOG_PATH: ${LOG_PATH}"
         echo "TB_DIR: ${TB_DIR}"

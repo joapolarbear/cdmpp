@@ -2,7 +2,8 @@
 
 PROJECT_PATH=$PWD && export PYTHONPATH=$PROJECT_PATH:$PROJECT_PATH/3rdparty/tenset/scripts:$PYTHONPATH
 
-TASK_NUMBER=200
+SAMPLE_NUM=2308
+# SAMPLE_NUM=200
 EXP_TIMES=3
 
 RST_DIR=".workspace/tiramisu"
@@ -31,12 +32,12 @@ echo "$PLATFORM,$DEVICES"
 for DEVICE in "${DEVICES[@]}"; do
     for (( i=1; i<=${EXP_TIMES}; i++ )); do
         echo "Device ${DEVICE}, iter ${i}"
-        LOG_PATH=${RST_DIR}/logs/tiramisu_${DEVICE}_${i}_${TASK_NUMBER}.txt
+        LOG_PATH=${RST_DIR}/logs/tiramisu_${DEVICE}_${i}_${SAMPLE_NUM}.txt
         bash scripts/train.sh run -y \
-            --mode sample${TASK_NUMBER} \
+            --mode sample${SAMPLE_NUM} \
             --tb_logdir .workspace/runs/tiramisu \
             --tiramisu --gpu_model ${DEVICE} 2>&1 | tee ${LOG_PATH}
 
-        mv .workspace/runs/tiramisu ${RST_DIR}/cost_modes/tiramisu_${DEVICE}_${i}_${TASK_NUMBER}
+        mv .workspace/runs/tiramisu ${RST_DIR}/cost_modes/tiramisu_${DEVICE}_${i}_${SAMPLE_NUM}
     done
 done
