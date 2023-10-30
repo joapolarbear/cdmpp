@@ -82,3 +82,6 @@ If you find this project intriguing and wish to cite it, please utilize the foll
   year={2024}
 }
 ```
+
+# License
+© Contributors Licensed under an [Apache-2.0](LICENSE) license.
