@@ -85,11 +85,11 @@ bash setup.sh
 ### Download and unzip
 You can choose to use either the CPU part or the GPU part. See [Tenset Dataset](https://github.com/tlc-pack/tenset/blob/main/docs/get_started_with_cost_model_experiments.md) to download the dataset accordingly. Our profiled dataset for A100, V100 and P100 will be available at [DOI:10.6084/m9.figshare.24156084](https://figshare.com/articles/dataset/cdmpp-data/24156084)
 
-### An example for T4 GPU
-Here we show an example to download the dataset of NVDIA T4.
+### An example of T4 GPU
+Here we show an example of downloading the dataset of NVIDIA T4.
 1. Change directory to `<The root directory of cdmpp>/3rdparty/tenset/scripts/`
 2. Download
-  - You can download it from google drive with the link [dataset_gpu_v3.3.zip](https://drive.google.com/file/d/1jqHbmvXUrLPDCIqJIaPee_atsPc0ZFFK/view?usp=sharing)
+  - You can download it from Google Drive with the link [dataset_gpu_v3.3.zip](https://drive.google.com/file/d/1jqHbmvXUrLPDCIqJIaPee_atsPc0ZFFK/view?usp=sharing)
   - Or you can use the command line
     ```
     pip3 install gdown
@@ -100,11 +100,11 @@ Here we show an example to download the dataset of NVDIA T4.
   - A new folder `dataset_gpu` will appear in `<The root directory of cdmpp>/3rdparty/tenset/scripts/`. Make `dataset` as a softlink to it
   by `ln -s <The root directory of cdmpp>/3rdparty/tenset/scripts/dataset_gpu dataset`.
 
-### An example for AMD EPYC 7452 CPU
+### An example of AMD EPYC 7452 CPU
 Here we show an example to download the dataset of AMD EPYC 7452 CPU.
 1. Change directory to `<The root directory of cdmpp>/3rdparty/tenset/scripts/`
 2. Download
-  - You can download it from google drive with the link [dataset_cpu_v3.3.zip](https://drive.google.com/file/d/1JQwGEe8jCpuhZPnUxO0Sb1CJJ06uevy6/view?usp=sharing)
+  - You can download it from Google Drive with the link [dataset_cpu_v3.3.zip](https://drive.google.com/file/d/1JQwGEe8jCpuhZPnUxO0Sb1CJJ06uevy6/view?usp=sharing)
   - Or you can use the command line
     ```
     pip3 install gdown
@@ -114,9 +114,10 @@ Here we show an example to download the dataset of AMD EPYC 7452 CPU.
   - Put `dataset_cpu_v3.3.zip` under `<The root directory of cdmpp>/3rdparty/tenset/scripts/` and run `unzip dataset_cpu_v3.3.zip`.
   - A new folder `dataset_cpu` will appear in `<The root directory of cdmpp>/3rdparty/tenset/scripts/`. Make `dataset` as a softlink to it
   by `ln -s <The root directory of cdmpp>/3rdparty/tenset/scripts/dataset_cpu dataset`.
-  - If `dataset` already exists, just run `mv dataset_cpu/measure_records/* dataset/measure_records/`
 
-You will see several direcotires under `<The root directory of cdmpp>/3rdparty/tenset/scripts/dataset/measure_records` as follows
+In the above process, if `dataset` already exists, just run `mv dataset_cpu/measure_records/* dataset/measure_records/`
+
+After the above processes, you will see several directories under `<The root directory of cdmpp>/3rdparty/tenset/scripts/dataset/measure_records` as follows
 ```bash
 measure_records
   |-t4
@@ -132,7 +133,7 @@ bash scripts/dataset/gen_raw_feature_all.sh
 ``` 
 By default, the extracted features will be stored at `.workspace/ast_ansor/$DEVICE_MODEL`.
 The process of extracting features and data preprocessing may take around 10~20 minutes for the dataset of each device.
-If you want to extract features for other device, just modify `DEVICES` in the `gen_raw_feature_all.sh`. 
+If you want to extract features for other devices, just modify `DEVICES` in the `gen_raw_feature_all.sh`. 
 By default, `'t4'` is used. Take AMD EPYC 7452 CPU for example, you can modify `DEVICES` as `DEVICES=('epyc-7452')`. 
 
 ### Data Preprocessing [Optional]
